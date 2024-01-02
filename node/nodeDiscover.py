@@ -6,16 +6,6 @@ import subprocess
 import json
 import requests
 
-#platform.uname()
-#platform.system()
-#platform.release()
-#platform.version()
-#platform.uname_result
-#platform.uname_result()
-#platfrom.machine()
-#platform.machine()
-#platform.node()
-
 ADDRESS = "127.0.0.1"
 PORT = "5000"
 NODE_HEADERS = { 'Content-Type': 'application/json' }
