@@ -6,9 +6,18 @@ import subprocess
 import json
 import requests
 
-ADDRESS = "127.0.0.1"
-PORT = "5000"
-NODE_HEADERS = { 'Content-Type': 'application/json' }
+import toml
+
+with open( 'config.toml','rt') as fh:
+    config = toml.load(fh)
+
+try:
+    ADDRESS = config['server']['ip']
+    PORT    = config['server']['port']
+    NODE_HEADERS = config['http']['header']
+except KeyError as ke:
+    print( "Unknown field {} in config.toml".format(e) )
+    exit(1)
 
 def installedApp( jDict, app, detailQueries = {}, versQuery = '--version' ):
     subp = subprocess.run( ["/usr/bin/env", app, versQuery],
