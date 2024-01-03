@@ -21,6 +21,7 @@ with open( 'config.toml','rt') as fh:
 try:
     ADDRESS = config['server']['ip']
     PORT    = config['server']['port']
+    NODE_URL = config['server']['url']
     NODE_HEADERS = config['http']['header']
 except KeyError as ke:
     print( "Unknown field {} in config.toml".format(e) )
@@ -102,6 +103,6 @@ if __name__ == "__main__":
     else:
         logging.error( "TODO: (#4) backup for netifaces (route -n and ip a)" )
 
-    requests.post( "http://" + ADDRESS + ":" + PORT,
+    requests.post( "http://" + ADDRESS + ":" + PORT + NODE_URL,
                   data = json.dumps( nodeInfo ),
                   headers = NODE_HEADERS )
