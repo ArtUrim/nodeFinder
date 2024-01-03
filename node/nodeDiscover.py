@@ -7,6 +7,7 @@ import json
 import requests
 
 import toml
+import logging
 
 with open( 'config.toml','rt') as fh:
     config = toml.load(fh)
@@ -18,6 +19,18 @@ try:
 except KeyError as ke:
     print( "Unknown field {} in config.toml".format(e) )
     exit(1)
+
+def jsonify( strj: str ):
+    try:
+        js = json.loads(strj)
+    except json.JSONDecodeError as jde:
+        logging.error( "Cannot convert to JSON: {}".format(jde.error) )
+        js = jde.doc
+    return js
+
+def jsonifyTable( strj: str ):
+    s2 = '[' + strj.strip() + ']'
+    return jsonify( s2.replace('\n',',') )
 
 def installedApp( jDict, app, detailQueries = {}, versQuery = '--version' ):
     subp = subprocess.run( ["/usr/bin/env", app, versQuery],
@@ -37,9 +50,9 @@ def installedApp( jDict, app, detailQueries = {}, versQuery = '--version' ):
                 queries.extend(detailQueries[dq])
             elif type(detailQueries[dq]) is dict:
                 if 'func' in detailQueries[dq] and 'query' in detailQueries[dq]:
-                    if type(detailQueries[dq]) is str:
+                    if type(detailQueries[dq]['query']) is str:
                         queries.append(detailQueries[dq]['query'])
-                    elif type(detailQueries[dq]) is list:
+                    elif type(detailQueries[dq]['query']) is list:
                         queries.extend(detailQueries[dq]['query'])
                     doFunc = detailQueries[dq]['func']
                 else:
@@ -65,7 +78,14 @@ if __name__ == "__main__":
         nodeInfo["lsb"][k] = v
 
     installedApp( nodeInfo, "python3" )
-    installedApp( nodeInfo, "docker" )
+    installedApp( nodeInfo, "docker", 
+                 detailQueries = {
+                     "images": { "query": ["images","--format","json","--digests"],
+                                "func": jsonifyTable },
+                     "containers": { "query": ["ps","-a","--format","json","--size"],
+                                    "func": jsonifyTable }
+                     }
+                 )
     installedApp( nodeInfo, "ls", detailQueries = { "all": "-a", "some": ["-t", "-l"] } )
 
     requests.post( "http://" + ADDRESS + ":" + PORT,
