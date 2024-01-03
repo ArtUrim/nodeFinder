@@ -9,6 +9,8 @@ import requests
 import toml
 import logging
 
+import macInfo
+
 with open( 'config.toml','rt') as fh:
     config = toml.load(fh)
 
@@ -86,7 +88,9 @@ if __name__ == "__main__":
                                     "func": jsonifyTable }
                      }
                  )
-    installedApp( nodeInfo, "ls", detailQueries = { "all": "-a", "some": ["-t", "-l"] } )
+
+    nodeInfo["netifaces"] = macInfo.ifaces()
+    nodeInfo["gateways"] = macInfo.gates()
 
     requests.post( "http://" + ADDRESS + ":" + PORT,
                   data = json.dumps( nodeInfo ),

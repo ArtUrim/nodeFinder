@@ -3,7 +3,6 @@
 
 import netifaces
 import logging
-import icmplib
 
 def ifaces():
     maces = {}
