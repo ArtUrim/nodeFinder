@@ -1,0 +1,10 @@
+syntax = "proto2";
+
+message NodeInfo {
+	required string name = 1;
+	optional string ver  = 2;
+}
+
+message Ack { 
+	required bool ack = 1;
+}
