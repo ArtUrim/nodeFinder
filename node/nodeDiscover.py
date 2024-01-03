@@ -75,9 +75,12 @@ if __name__ == "__main__":
     nodeInfo["release"] = platform.release()
     nodeInfo["system"] = platform.system()
 
-    nodeInfo["lsb"] = {}
-    for k,v in platform.freedesktop_os_release().items():
-        nodeInfo["lsb"][k] = v
+    if 'freedesktop_os_release' in dir(platform):
+        nodeInfo["lsb"] = {}
+        for k,v in platform.freedesktop_os_release().items():
+            nodeInfo["lsb"][k] = v
+    else:
+        logging.warn( "Module platform does not contain freedesktop_os_release" )
 
     installedApp( nodeInfo, "python3" )
     installedApp( nodeInfo, "docker", 
