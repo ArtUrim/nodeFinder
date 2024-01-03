@@ -8,8 +8,12 @@ import requests
 
 import toml
 import logging
-
-import macInfo
+ 
+noNetifaces = None
+try:
+    import macInfo
+except ModuleNotFoundError:
+    noNetifaces = True
 
 with open( 'config.toml','rt') as fh:
     config = toml.load(fh)
@@ -80,7 +84,7 @@ if __name__ == "__main__":
         for k,v in platform.freedesktop_os_release().items():
             nodeInfo["lsb"][k] = v
     else:
-        logging.warn( "Module platform does not contain freedesktop_os_release" )
+        logging.warn( "TODO: (#3) Module platform does not contain freedesktop_os_release" )
 
     installedApp( nodeInfo, "python3" )
     installedApp( nodeInfo, "docker", 
@@ -92,8 +96,11 @@ if __name__ == "__main__":
                      }
                  )
 
-    nodeInfo["netifaces"] = macInfo.ifaces()
-    nodeInfo["gateways"] = macInfo.gates()
+    if not noNetifaces:
+        nodeInfo["netifaces"] = macInfo.ifaces()
+        nodeInfo["gateways"] = macInfo.gates()
+    else:
+        logging.error( "TODO: (#4) backup for netifaces (route -n and ip a)" )
 
     requests.post( "http://" + ADDRESS + ":" + PORT,
                   data = json.dumps( nodeInfo ),
