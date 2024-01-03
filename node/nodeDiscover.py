@@ -26,7 +26,7 @@ def jsonify( strj: str ):
     try:
         js = json.loads(strj)
     except json.JSONDecodeError as jde:
-        logging.error( "Cannot convert to JSON: {}".format(jde.error) )
+        logging.error( "Cannot convert to JSON: {}".format(jde.msg) )
         js = jde.doc
     return js
 
