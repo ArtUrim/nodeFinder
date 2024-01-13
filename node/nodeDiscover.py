@@ -50,6 +50,10 @@ def installedApp( jDict, app, detailQueries = {}, versQuery = '--version', name=
         m = re.search( '\d+\.\d+\.\d+', verr )
         if m:
             verr = m.group()
+        else:
+            m = re.search( '\d+\.\d+', verr )
+            if m:
+                verr = m.group()
         jDict[name] = verr
     else:
         jDict[name] = None
@@ -103,6 +107,8 @@ if __name__ == "__main__":
                                     "func": jsonifyTable }
                      }
                  )
+    installedApp( nodeInfo, "ldd", name="glibc" )
+    installedApp( nodeInfo, "openssl", versQuery="version" )
 
     if not noNetifaces:
         nodeInfo["netifaces"] = macInfo.ifaces()
