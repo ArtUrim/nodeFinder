@@ -8,6 +8,7 @@ import requests
 
 import toml
 import logging
+import re
  
 noNetifaces = None
 try:
@@ -39,15 +40,21 @@ def jsonifyTable( strj: str ):
     s2 = '[' + strj.strip() + ']'
     return jsonify( s2.replace('\n',',') )
 
-def installedApp( jDict, app, detailQueries = {}, versQuery = '--version' ):
+def installedApp( jDict, app, detailQueries = {}, versQuery = '--version', name=None ):
+    if not name:
+        name = app
     subp = subprocess.run( ["/usr/bin/env", app, versQuery],
                           capture_output=True )
     if subp.returncode == 0:
-        jDict[app] = subp.stdout.decode().strip()
+        verr = subp.stdout.decode().strip()
+        m = re.search( '\d+\.\d+\.\d+', verr )
+        if m:
+            verr = m.group()
+        jDict[name] = verr
     else:
-        jDict[app] = None
+        jDict[name] = None
     if detailQueries:
-        jDict[app + '_details'] = {}
+        jDict[name + '_details'] = {}
         for dq in detailQueries:
             queries = ["/usr/bin/env", app]
             doFunc = None
@@ -69,9 +76,9 @@ def installedApp( jDict, app, detailQueries = {}, versQuery = '--version' ):
             subp = subprocess.run( queries, capture_output =  True )
             if subp.returncode == 0:
                 if doFunc:
-                    jDict[app + '_details'][dq] = doFunc(subp.stdout.decode())
+                    jDict[name + '_details'][dq] = doFunc(subp.stdout.decode())
                 else:
-                    jDict[app + '_details'][dq] = subp.stdout.decode().strip()
+                    jDict[name + '_details'][dq] = subp.stdout.decode().strip()
     
 if __name__ == "__main__":
     nodeInfo = {}
