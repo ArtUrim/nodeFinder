@@ -9,6 +9,8 @@ import requests
 import toml
 import logging
 import re
+
+import argparse
  
 noNetifaces = None
 try:
@@ -16,17 +18,6 @@ try:
 except ModuleNotFoundError:
     noNetifaces = True
 
-with open( 'config.toml','rt') as fh:
-    config = toml.load(fh)
-
-try:
-    ADDRESS = config['server']['ip']
-    PORT    = config['server']['port']
-    NODE_URL = config['server']['url']
-    NODE_HEADERS = config['http']['header']
-except KeyError as ke:
-    print( "Unknown field {} in config.toml".format(e) )
-    exit(1)
 
 def jsonify( strj: str ):
     try:
@@ -110,8 +101,39 @@ def findPyVenv( jDict: dict ):
                     if m:
                         jDict[name] = m.group()
 
+def inputParse(adr,port):
+    parser = argparse.ArgumentParser()
+    parser.add_argument( "-l", help="send to localhost", action='store_true' )
+    parser.add_argument( "-i", help="send to ip address", type=str )
+    parser.add_argument( "-p", help="send to ip port", type=str )
+    args = parser.parse_args()
+    if args.l and args.i:
+        print( "Either localhost or implicite ip address" )
+        exit(1)
+    if args.l:
+        adr = "127.0.0.1"
+    if args.i:
+        adr = args.i
+    if args.p:
+        port = args.p
+    return (adr,port)
 
 if __name__ == "__main__":
+
+    with open( 'config.toml','rt') as fh:
+        config = toml.load(fh)
+
+    try:
+        ADDRESS = config['server']['ip']
+        PORT    = config['server']['port']
+        NODE_URL = config['server']['url']
+        NODE_HEADERS = config['http']['header']
+    except KeyError as ke:
+        print( "Unknown field {} in config.toml".format(e) )
+        exit(1)
+
+    (ADDRESS,PORT)=inputParse(ADDRESS, PORT)
+
     nodeInfo = {}
     nodeInfo["platform"] = platform.machine()
     nodeInfo["node"] = platform.node()
@@ -150,6 +172,7 @@ if __name__ == "__main__":
     else:
         logging.error( "TODO: (#4) backup for netifaces (route -n and ip a)" )
 
+    logging.info( f"ADDRESS:{ADDRESS} PORT:{PORT}" )
     requests.post( "http://" + ADDRESS + ":" + PORT + NODE_URL,
                   data = json.dumps( nodeInfo ),
                   headers = NODE_HEADERS )
