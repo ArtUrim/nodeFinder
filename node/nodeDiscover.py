@@ -83,7 +83,34 @@ def installedApp( jDict, app, detailQueries = {}, versQuery = '--version', name=
                     jDict[name + '_details'][dq] = doFunc(subp.stdout.decode())
                 else:
                     jDict[name + '_details'][dq] = subp.stdout.decode().strip()
-    
+
+def findPyVenv( jDict: dict ):
+    name = "venv"
+    jDict[name] = None
+    res = subprocess.run( [ "/usr/bin/env", "pip3", "show", name ],
+                         capture_output = True )
+    if res.returncode == 0:
+        verr = subp.stdout.decode().strip()
+        m = re.search( '\d+\.\d+\.\d+', verr )
+        if m:
+            verr = m.group()
+        else:
+            m = re.search( '\d+\.\d+', verr )
+            if m:
+                verr = m.group()
+        jDict[name] = verr
+    else:
+        res = subprocess.run( [ "/usr/bin/env", "apt", "list", "python3-" + name ],
+                             capture_output = True )
+        if res.returncode == 0:
+            sl = res.stdout.decode().split('\n')
+            for s in sl:
+                if s.endswith('[installed]'):
+                    m = re.search( '\d+(\.\d+){2,3}', s )
+                    if m:
+                        jDict[name] = m.group()
+
+
 if __name__ == "__main__":
     nodeInfo = {}
     nodeInfo["platform"] = platform.machine()
@@ -99,6 +126,13 @@ if __name__ == "__main__":
         logging.warn( "TODO: (#3) Module platform does not contain freedesktop_os_release" )
 
     installedApp( nodeInfo, "python3" )
+    nodeInfo["python3_details"] = {}
+    installedApp( nodeInfo["python3_details"], "pip3" )
+    installedApp( nodeInfo["python3_details"], "pipenv" )
+    installedApp( nodeInfo["python3_details"], "poetry" )
+    installedApp( nodeInfo["python3_details"], "pytest" )
+    findPyVenv( nodeInfo['python3_details'] )
+
     installedApp( nodeInfo, "docker", 
                  detailQueries = {
                      "images": { "query": ["images","--format","json","--digests"],
