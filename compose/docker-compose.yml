@@ -1,0 +1,75 @@
+version: "3.7"
+
+
+services:
+# first container
+    art_back:
+        # look for dockerfile and build the container
+        build: ./backend
+        container_name:  art_back
+        restart: always
+        # set enviornemt variables
+        environment: 
+            - APP_NAME=FlaskApp
+        #  mount the volumes so we can change code and hot reload
+        volumes:
+            - './backend:/backend'
+        #  expose port on the container, only to other containers
+        expose:
+            - 8080
+
+    node_con:
+        # look for dockerfile and build the container
+        build: ./node_connector
+        container_name:  node_con
+        restart: always
+        # set enviornemt variables
+        environment: 
+            - APP_NAME=FlaskApp
+        #  mount the volumes so we can change code and hot reload
+        volumes:
+            - './node_connector:/node_connector'
+        #  expose port on the container, only to other containers
+        expose:
+            - 8080
+
+    art_nginx:
+        build: ./nginx
+        container_name:  art_nginx
+        restart: always
+        # port allows the host machine to link to container
+        # pass 80 from host machine to 80 of the image filesystem
+        ports:
+            - "80:80"
+
+    frontend:
+        build: ./frontend
+        container_name:  frontend
+        restart: always
+        #  mount the volumes so we can change code and hot reload
+        volumes:
+            - './frontend:/frontend'
+
+        #  port allows the host machine to link to container
+        #  8000 for vue ui, 5000 for our vue app
+        ports:
+            - "8000:8000"
+            - "5000:5000"
+
+    redis-stack:
+        image: redis/redis-stack:7.2.0-v6
+        container_name:  redis-stack
+        restart: always
+
+        #  mount the volumes so we can change code and hot reload
+        volumes:
+            - "./Redis/redis-stack.conf:/redis-stack.conf"
+            - "./Redis/data:/data"
+
+        #  port allows the host machine to link to container
+        ports:
+            - "10001:6379"
+            - "13333:8001"
+
+        environment:
+            REDIS_ARGS: "--save 60 1000 --appendonly yes"
