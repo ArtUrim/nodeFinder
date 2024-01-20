@@ -4,9 +4,15 @@
 import platform
 import subprocess
 import json
-import requests
 
-import toml
+req_installed = None
+try:
+    import requests
+    req_installed = True
+except ModuleNotFoundError:
+    print( "No requests module installed - print result to result.json file" )
+
+import tomllib
 import logging
 import re
 
@@ -120,8 +126,8 @@ def inputParse(adr,port):
 
 if __name__ == "__main__":
 
-    with open( 'config.toml','rt') as fh:
-        config = toml.load(fh)
+    with open( 'config.toml','rb') as fh:
+        config = tomllib.load(fh)
 
     try:
         ADDRESS = config['server']['ip']
@@ -142,8 +148,11 @@ if __name__ == "__main__":
 
     if 'freedesktop_os_release' in dir(platform):
         nodeInfo["lsb"] = {}
-        for k,v in platform.freedesktop_os_release().items():
-            nodeInfo["lsb"][k] = v
+        try:
+            for k,v in platform.freedesktop_os_release().items():
+                nodeInfo["lsb"][k] = v
+        except FileNotFoundError:
+            logging.warning( "Cannot read lsb_release file" )
     else:
         logging.warn( "TODO: (#3) Module platform does not contain freedesktop_os_release" )
 
@@ -173,6 +182,10 @@ if __name__ == "__main__":
         logging.error( "TODO: (#4) backup for netifaces (route -n and ip a)" )
 
     logging.info( f"ADDRESS:{ADDRESS} PORT:{PORT}" )
+if req_installed:
     requests.post( "http://" + ADDRESS + ":" + PORT + NODE_URL,
                   data = json.dumps( nodeInfo ),
                   headers = NODE_HEADERS )
+else:
+    with open( "result.json", "wt" ) as fh:
+        json.dump( nodeInfo, fh )
