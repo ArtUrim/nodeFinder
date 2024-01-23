@@ -1,11 +1,9 @@
-FROM node:lts-alpine
+FROM node:current-alpine3.19
 
-# install project dependencies
-RUN npm install -g @vue/cli
+RUN npm install -g npm@10.3.0
 
-# copy project files and folders to the current working directory (i.e. 'app' folder)
-ADD . /frontend
+#EXPOSE 3000
 
+#WORKDIR /data
 
-# vue ui --headless --port 8000 --host 0.0.0.0
-CMD [ "vue", "ui", "--headless" , "--port", "8000",  "--host", "0.0.0.0" ]
+#ENTRYPOINT [ "npm", "run", "dev", "--", "--host", "0.0.0.0" ]

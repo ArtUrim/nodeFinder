@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, make_response, jsonify
 app = Flask(__name__)
 import json
 import redis
@@ -19,9 +19,33 @@ def send2Db():
 
 send2Db.r = None
 
-@app.route('/api/hello')
+@app.route('/api/nodes')
 def hello_world():
-    return send2Db(), 200
+    resp = make_response( jsonify( send2Db() ) )
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.status = 200
+    return resp
+
+@app.route( '/api/species' )
+def species():
+    vals = [ {
+        "name": 'African Elephant',
+        "species": 'Loxodonta africana',
+        "diet": 'Herbivore',
+        "habitat": 'Savanna, Forests',
+        },
+        {
+            "name": 'Mysz',
+            "species": 'myszarka',
+            "diet": 'co znajdzie',
+            "habitat": 'domek'
+        }
+    ]
+    resp = make_response( jsonify(vals) )
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.status = 200
+    return resp
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

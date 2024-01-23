@@ -1,2 +1,4 @@
 /Redis/data
 /Redis/redis-stack.conf
+__pycache__
+node_modules

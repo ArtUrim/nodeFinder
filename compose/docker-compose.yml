@@ -53,8 +53,17 @@ services:
         #  port allows the host machine to link to container
         #  8000 for vue ui, 5000 for our vue app
         ports:
-            - "8000:8000"
+            - "3000:3000"
             - "5000:5000"
+        entrypoint:
+          - npm
+          - run
+          - dev
+          - --
+          - --host
+          - 0.0.0.0
+        working_dir: /frontend
+        user: 1000:1000
 
     redis-stack:
         image: redis/redis-stack:7.2.0-v6
