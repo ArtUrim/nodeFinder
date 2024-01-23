@@ -98,3 +98,77 @@ $3
 1.0
 $8
 SORTABLE
+*2
+$6
+SELECT
+$1
+0
+*4
+$8
+JSON.SET
+$11
+node:banana
+$1
+$
+$251
+[{"platform": "aarch64", "node": "bpi-iot-ros-ai", "release": "4.9.119-BPI-M4-Kernel", "system": "Linux", "python3": "Python 3.8.10", "docker": "Docker version 18.06.1-ce, build e68fc7a", "docker_details": {"images": "[json,json]", "containers": []}}]
+*4
+$8
+JSON.SET
+$9
+node:acer
+$1
+$
+$663
+[{"gateways": {"192.168.0.1": ["wlp6s0", true]}, "platform": "i686", "node": "acer", "release": "6.1.0-16-686-pae", "system": "Linux", "lsb": {"NAME": "Debian GNU/Linux", "ID": "debian", "PRETTY_NAME": "Debian GNU/Linux 12 (bookworm)", "VERSION_ID": "12", "VERSION": "12 (bookworm)", "VERSION_CODENAME": "bookworm", "HOME_URL": "https://www.debian.org/", "SUPPORT_URL": "https://www.debian.org/support", "BUG_REPORT_URL": "https://bugs.debian.org/"}, "python3": "Python 3.11.2", "docker": null, "docker_details": {}, "netifaces": {"lo": ["00:00:00:00:00:00", "127.0.0.1"], "enp7s0": ["38:60:77:a2:40:10", null], "wlp6s0": ["d0:df:9a:7d:25:9b", "192.168.0.241"]}}]
+*4
+$8
+JSON.SET
+$12
+node:raspK8s
+$1
+$
+$1482
+[{"gateways": {"192.168.0.1": ["wlan0", true]}, "platform": "aarch64", "node": "raspK8s", "release": "6.1.21-v8+", "system": "Linux", "python3": "Python 3.9.2", "docker": "Docker version 24.0.7, build afdd53b", "docker_details": {"images": [{"Containers": "N/A", "CreatedAt": "2022-07-07 21:44:55 +0200 CEST", "CreatedSince": "18 months ago", "Digest": "sha256:3df8e82aab189503200c3d60d8da9832a160623cd53430300114ec8d0365ab28", "ID": "c83c0d0573b7", "Repository": "arturim13/sphinx-testdec", "SharedSize": "N/A", "Size": "485MB", "Tag": "0.1rsp", "UniqueSize": "N/A", "VirtualSize": "484.8MB"}, {"Containers": "N/A", "CreatedAt": "2022-06-07 03:25:32 +0200 CEST", "CreatedSince": "19 months ago", "Digest": "sha256:b6b83d3c331794420340093eb706a6f152d9c1fa51b262d9bf34594887c2c7ac", "ID": "a7870fd478f4", "Repository": "ubuntu", "SharedSize": "N/A", "Size": "69.2MB", "Tag": "22.04", "UniqueSize": "N/A", "VirtualSize": "69.2MB"}, {"Containers": "N/A", "CreatedAt": "2022-03-19 17:12:58 +0100 CET", "CreatedSince": "21 months ago", "Digest": "sha256:80f31da1ac7b312ba29d65080fddf797dd76acfb870e677f390d5acba9741b17", "ID": "46331d942d63", "Repository": "hello-world", "SharedSize": "N/A", "Size": "9.14kB", "Tag": "latest", "UniqueSize": "N/A", "VirtualSize": "9.136kB"}], "containers": []}, "netifaces": {"lo": ["00:00:00:00:00:00", "127.0.0.1"], "eth0": ["b8:27:eb:ea:fb:86", null], "wlan0": ["b8:27:eb:bf:ae:d3", "192.168.0.145"], "docker0": ["02:42:28:e3:5a:2a", "172.17.0.1"]}}]
+*2
+$3
+del
+$9
+node:acer
+*2
+$3
+del
+$12
+node:raspK8s
+*4
+$8
+JSON.SET
+$12
+node:raspK8s
+$1
+$
+$1480
+{"gateways": {"192.168.0.1": ["wlan0", true]}, "platform": "aarch64", "node": "raspK8s", "release": "6.1.21-v8+", "system": "Linux", "python3": "Python 3.9.2", "docker": "Docker version 24.0.7, build afdd53b", "docker_details": {"images": [{"Containers": "N/A", "CreatedAt": "2022-07-07 21:44:55 +0200 CEST", "CreatedSince": "18 months ago", "Digest": "sha256:3df8e82aab189503200c3d60d8da9832a160623cd53430300114ec8d0365ab28", "ID": "c83c0d0573b7", "Repository": "arturim13/sphinx-testdec", "SharedSize": "N/A", "Size": "485MB", "Tag": "0.1rsp", "UniqueSize": "N/A", "VirtualSize": "484.8MB"}, {"Containers": "N/A", "CreatedAt": "2022-06-07 03:25:32 +0200 CEST", "CreatedSince": "19 months ago", "Digest": "sha256:b6b83d3c331794420340093eb706a6f152d9c1fa51b262d9bf34594887c2c7ac", "ID": "a7870fd478f4", "Repository": "ubuntu", "SharedSize": "N/A", "Size": "69.2MB", "Tag": "22.04", "UniqueSize": "N/A", "VirtualSize": "69.2MB"}, {"Containers": "N/A", "CreatedAt": "2022-03-19 17:12:58 +0100 CET", "CreatedSince": "21 months ago", "Digest": "sha256:80f31da1ac7b312ba29d65080fddf797dd76acfb870e677f390d5acba9741b17", "ID": "46331d942d63", "Repository": "hello-world", "SharedSize": "N/A", "Size": "9.14kB", "Tag": "latest", "UniqueSize": "N/A", "VirtualSize": "9.136kB"}], "containers": []}, "netifaces": {"lo": ["00:00:00:00:00:00", "127.0.0.1"], "eth0": ["b8:27:eb:ea:fb:86", null], "wlan0": ["b8:27:eb:bf:ae:d3", "192.168.0.145"], "docker0": ["02:42:28:e3:5a:2a", "172.17.0.1"]}}
+*2
+$3
+del
+$11
+node:banana
+*4
+$8
+JSON.SET
+$9
+node:acer
+$1
+$
+$661
+{"gateways": {"192.168.0.1": ["wlp6s0", true]}, "platform": "i686", "node": "acer", "release": "6.1.0-16-686-pae", "system": "Linux", "lsb": {"NAME": "Debian GNU/Linux", "ID": "debian", "PRETTY_NAME": "Debian GNU/Linux 12 (bookworm)", "VERSION_ID": "12", "VERSION": "12 (bookworm)", "VERSION_CODENAME": "bookworm", "HOME_URL": "https://www.debian.org/", "SUPPORT_URL": "https://www.debian.org/support", "BUG_REPORT_URL": "https://bugs.debian.org/"}, "python3": "Python 3.11.2", "docker": null, "docker_details": {}, "netifaces": {"lo": ["00:00:00:00:00:00", "127.0.0.1"], "enp7s0": ["38:60:77:a2:40:10", null], "wlp6s0": ["d0:df:9a:7d:25:9b", "192.168.0.241"]}}
+*4
+$8
+JSON.SET
+$11
+node:banana
+$1
+$
+$249
+{"platform": "aarch64", "node": "bpi-iot-ros-ai", "release": "4.9.119-BPI-M4-Kernel", "system": "Linux", "python3": "Python 3.8.10", "docker": "Docker version 18.06.1-ce, build e68fc7a", "docker_details": {"images": "[json,json]", "containers": []}}

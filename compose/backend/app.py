@@ -13,8 +13,11 @@ def send2Db():
     if send2Db.r is None:
         send2Db.r = redis.Redis( host="redis-stack", port=6379 )
     jarr = []
-    for d in send2Db.r.ft('info').search( Query('*').return_fields( "node", "platform" "docker" "python3" ) ).docs:
-        jarr.append(d.__dict__)
+    for d in send2Db.r.ft('info').search( Query('*').return_fields( "node", "platform", "docker", "python3" ) ).docs:
+        node = d.__dict__
+        node.pop('id', None)
+        node.pop('payload', None)
+        jarr.append(node)
     return jarr
 
 send2Db.r = None
