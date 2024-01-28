@@ -16,6 +16,7 @@ export default {
      async fetchData() {
        const response = await fetch('http://localhost/api/nodes')
        this.items = await response.json();
+		 console.log( this.items )
 		 this.item_available = true;
      }
   },

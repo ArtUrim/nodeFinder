@@ -114,7 +114,8 @@ def tests_from_gitlab(project=None):
         resp.headers['Access-Control-Allow-Origin'] = '*'
         resp.status = 418
         return resp
-    resp = make_response( jsonify( val ) )
+    v2 = [ { 'name': x } for x in val ]
+    resp = make_response( jsonify( v2 ) )
     resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.status = 200
     return resp
