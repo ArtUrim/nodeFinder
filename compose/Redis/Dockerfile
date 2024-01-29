@@ -1,0 +1,1 @@
+FROM redis/redis-stack:6.2.6-v10

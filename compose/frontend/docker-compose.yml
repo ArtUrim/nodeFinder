@@ -1,0 +1,22 @@
+#docker run -v .:/frontend -w /frontend/vue-project -p 5173:5173 node:alpine npm run dev -- --host 0.0.0.0
+
+services:
+  vuetify:
+    build: .
+    # image: node:current-alpine3.19
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/data
+    entrypoint:
+      - npm
+      - run
+      - dev
+      - --
+      - --host
+      - 0.0.0.0
+    working_dir: /data
+    user: 1000:1000
+
+
+
