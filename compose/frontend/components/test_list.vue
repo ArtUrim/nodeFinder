@@ -1,11 +1,16 @@
 <template>
   <v-card>
     <div class="d-flex flex-row">
-      <v-tabs v-model="items" direction="vertical" color="primary">
-        <v-tab v-for="item in items" :value="item.name">
+      <v-tabs direction="vertical" color="primary">
+			<v-tab v-show="!is_top" @click="returnUp" >
+				...
+			</v-tab>
+        <v-tab v-for="item in items" :value="item.name"
+			  @click="fetchData(item.name)" >
 			  {{ item.name }}
         </v-tab>
       </v-tabs>
+		{{ text }}
     </div>
   </v-card>
 </template>
@@ -17,22 +22,40 @@ export default {
   data() {
     return {
 		 items: [],
-		 item_available: false,
+		 text: null,
+		 is_top: true,
+		 project: null,
     };
   },
   methods: {
-     async fetchData() {
-       const response = await fetch('http://localhost/api/tests')
-       this.items = await response.json();
-		 console.log( this.items )
-		 console.log( this.items[0] )
-		 console.log( this.items.length )
-		 this.item_available = true;
-     }
+	  async fetchData(item) {
+		  let href = '/api/test';
+		  if( this.project === null ) {
+			  href += 's/' + item;
+		  } else {
+			  href += '/' + this.project + '/file/' + item;
+		  }
+		  const response = await fetch( href );
+		  this.is_top = false;
+		  const retVal = await response.json();
+		  if( this.project === null ) {
+			  this.project = item;
+			  this.items = retVal;
+		  } else {
+			  this.text = retVal.content.replaceAll( '\n', '<br>\n' );
+		  }
+	  },
+	  async returnUp() {
+		  this.text = null;
+		  const response = await fetch( '/api/tests' );
+		  this.items = await response.json();
+		  this.is_top = true;
+		  this.project = null;
+	  }
   },
 	mounted() {
-		this.items = this.fetchData();
-	   console.log( "Is Billy on the line?" )
+		this.items = this.returnUp(null);
+	   // console.log( "Is Billy on the line?" )
   },
 };
 

@@ -14,15 +14,14 @@ export default {
   },
   methods: {
      async fetchData() {
-       const response = await fetch('http://localhost/api/nodes')
+       const response = await fetch('/api/nodes')
        this.items = await response.json();
-		 console.log( this.items )
+		 // console.log( this.items )
 		 this.item_available = true;
      }
   },
 	mounted() {
 		this.items = this.fetchData();
-	   console.log( "Is Billy on the line?" )
   },
 };
 

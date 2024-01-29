@@ -64,7 +64,6 @@ send2Db.r = None
 @app.route('/api/nodes')
 def hello_world():
     resp = make_response( jsonify( send2Db() ) )
-    resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.status = 200
     return resp
 
@@ -77,18 +76,15 @@ def test_file( project, fname ):
         error = { 'origin': 'gitlab',
                  'value': str(ge) }
         resp = make_response( jsonify( error ) )
-        resp.headers['Access-Control-Allow-Origin'] = '*'
         resp.status = 400
         return resp
     if val is None:
         error = { 'origin': 'parser',
                  'value': f"No project {project}" }
         resp = make_response( jsonify( error ) )
-        resp.headers['Access-Control-Allow-Origin'] = '*'
         resp.status = 418
         return resp
     resp = make_response( jsonify( val ) )
-    resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.status = 200
     return resp
     
@@ -104,42 +100,18 @@ def tests_from_gitlab(project=None):
         error = { 'origin': 'gitlab',
                  'value': str(ge) }
         resp = make_response( jsonify( error ) )
-        resp.headers['Access-Control-Allow-Origin'] = '*'
         resp.status = 400
         return resp
     if val is None:
         error = { 'origin': 'parser',
                  'value': f"No project {project}" }
         resp = make_response( jsonify( error ) )
-        resp.headers['Access-Control-Allow-Origin'] = '*'
         resp.status = 418
         return resp
     v2 = [ { 'name': x } for x in val ]
     resp = make_response( jsonify( v2 ) )
-    resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.status = 200
     return resp
-
-@app.route( '/api/species' )
-def species():
-    vals = [ {
-        "name": 'African Elephant',
-        "species": 'Loxodonta africana',
-        "diet": 'Herbivore',
-        "habitat": 'Savanna, Forests',
-        },
-        {
-            "name": 'Mysz',
-            "species": 'myszarka',
-            "diet": 'co znajdzie',
-            "habitat": 'domek'
-        }
-    ]
-    resp = make_response( jsonify(vals) )
-    resp.headers['Access-Control-Allow-Origin'] = '*'
-    resp.status = 200
-    return resp
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
