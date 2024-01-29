@@ -12,11 +12,7 @@ try:
 except ModuleNotFoundError:
     print( "No requests module installed - print result to result.json file" )
 
-try:
-    import tomllib
-except ModuleNotFoundError:
-    import tomli as tomllib
-
+import tomllib
 import logging
 import re
 
